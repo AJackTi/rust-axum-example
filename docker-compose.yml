@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: rust-axum
+    ports:
+      - "5432:5432"
+    networks:
+      - rust-axum
+  cache:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - type: volume
+        source: cache
+        target: /data
+    networks:
+      - rust-axum
+
+volumes:
+  cache:
+    driver: local
+
+networks:
+  rust-axum:
+    driver: bridge
